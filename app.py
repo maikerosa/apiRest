@@ -3,7 +3,7 @@ from marshmallow import ValidationError
 
 from ma import ma
 from db import db
-from controllers.book import Book, BookList, BookDelete
+from controllers.book import Book, BookList, BookUpdate, BookCreate, BookDelete
 
 from server.instance import server
 
@@ -14,9 +14,11 @@ app = server.app
 def create_tables():
     db.create_all()
 
-api.add_resource(Book, '/books/<int:id>')
+api.add_resource(Book, '/book/<int:id>')
 api.add_resource(BookList, '/books')
-api.add_resource(BookDelete, '/books/<int:id>')
+api.add_resource(BookCreate, '/books/create')
+api.add_resource(BookUpdate, '/books/update/<int:id>')
+api.add_resource(BookDelete, '/books/delete/<int:id>')
 
 if __name__ == '__main__':
     db.init_app(app)

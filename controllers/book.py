@@ -23,12 +23,13 @@ class Book(Resource):
         if book:
             return book_schema.dump(book), 200
         return {'message': ITEM_NOT_FOUND}, 404
-
-
+    
+    
 class BookList(Resource):
     def get(self):
         return {'books': book_list_schema.dump(BookModel.find_all())}, 200
-
+   
+class BookCreate(Resource):
     @book_ns.expect(item)
     @book_ns.doc('create_book')
     def post(self):
@@ -44,11 +45,27 @@ class BookList(Resource):
             except:
                 return {'message': 'Ocorreu um erro ao salvar o livro.'}, 500
             return book_schema.dump(book), 201
+    
+
+class BookUpdate(Resource):
+    @book_ns.expect(item)
+    @book_ns.doc('update_book')
+    def put(self, id):
+        book_data = BookModel.find_by_id(id)
+        book_json = request.get_json()
+
+        book_data.pages = book_json['pages']
+        book_data.title = book_json['title']
+
+        book_data.save_to_db()
+        return book_schema.dump(book_data), 200
 
 class BookDelete(Resource):
+    @book_ns.doc('delete_book')
+    @book_ns.response(204, 'Book deleted')
     def delete(self, id):
-        book = BookModel.find_by_id(id)
-        if book:
-            book.delete_from_db()
-            return {'message': 'Item deletado'}, 200
+        book_data = BookModel.find_by_id(id)
+        if book_data:
+            book_data.delete_from_db()
+            return {'message': 'Item deleted.'}, 200
         return {'message': ITEM_NOT_FOUND}, 404
