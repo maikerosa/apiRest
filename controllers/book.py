@@ -38,7 +38,11 @@ class BookList(Resource):
         if BookModel.find_by_title(book_data.title):
             return {'message': f'Um livro com o titulo {book_data.title} ja existe.'}, 400
         else:
-            book = BookModel(**book_data)
+            book = BookModel(title=book_data.title, pages=book_data.pages)
+            try:
+                book.save_to_db()
+            except:
+                return {'message': 'Ocorreu um erro ao salvar o livro.'}, 500
             return book_schema.dump(book), 201
 
 class BookDelete(Resource):
