@@ -2,8 +2,6 @@ Esse projeto é uma apiRest para o gerenciamento de uma livraria, onde é possí
 
 -- Simple API Rest
 
-Para python > 3:
-
 File "C:\Users\mk\Documents\Projetos\apiRest\env\lib\site-packages\flask_restplus\model.py", line 8, in <module>
 from collections import OrderedDict, MutableMapping
 
